@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Orbitron:400,900" rel="stylesheet">
+
+    <script>
+        //here is a ton of extra code which i wrote on a whiteboard and has not been properly tested yet
+        //currently the code will rotate the number every x ms based on the timeout method. if the user has entered the correct
+        //int we can skip to the next number instead of forcing them to wait. this can probably be done with a loop somehow
+
+        //document.onload dom.contentsloaded
+        function startMessage() {
+            document.getElementById("bigint").innerHTML = "Enter the number in time or be eliminated" + "Press any key to begin";
+            //for some reason this loads mainGame() even without keypress, not sure why
+            window.onkeypress = setup;
+
+        }
+
+        function setup() {
+            gameTimer();
+        }
+
+        function gameTimer() {
+            setInterval(mainGame, 500);
+            setInterval(checkInput, 500);
+        }
+
+        function stopTimer() {
+            clearInterval(interval);
+        }
+
+        function mainGame() {
+            var userInput = "";
+            var totalScore = 0;
+            //run rng to generate 2-digit (10-99) ints
+            var randomInt = Math.floor(Math.random() * (99 - 10) + 10);
+            //output int on screen
+            document.getElementById("bigint").innerHTML = randomInt.toString();
+            var userInput = userInput + String.charCode(event.keyCode);
+        }
+
+        function checkInput() {
+            var inputIsCorrect;
+            if(userInput != randomInt) {
+                endGame;
+            }
+        }
+
+        //TODO: implement checkInput() calling endGame() if inputIsCorrect === false
+        function endGame(totalScore) {
+            document.getElementById("bigint").innerHTML =  "GAME OVER" + "\n" + "your final score was" + totalScore;
+            //TODO: link keydown to game start
+            // wipe message div
+            document.getElementById("bigint").innerHTML =  "";
+        }
+
+    </script>
+</head>
+<style>
+    .body {
+        text-align: justify;
+    }
+
+    .bigint {
+        /*vertically / horizontally center it*/
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+
+        /*set it to large Orbitron */
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2000%;
+    }
+
+    .p {
+        /* set it to large Orbitron, but not as large as the number */
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1000%;
+    }
+
+</style>
+<body onload="startMessage()" id="fuck">
+<p><div id="message"></div></p>
+<div class="bigint" id="bigint">29</div>
+</body>
+</html>
